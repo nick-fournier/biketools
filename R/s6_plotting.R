@@ -13,7 +13,7 @@ library(lubridate)
 library(gridExtra)
 library(scales)
 library(optimx)
-register_google(key = "AIzaSyCZmBRbtyKHUk5sFF2_1ggAx8TiIxpIEw8")
+
 
 #load data
 load('./data/ADBdata.RData')
@@ -179,7 +179,7 @@ plots[['alphajit']] <- ggplot(data=alpha[year<2018,]) + #alpha[max_month>1 & min
 #plots[['alphajit']]
 #Alpha muni plot
 plots[['alphamuni']] <- ggplot(data=alpha.muni[year<2018,]) +
-  geom_point(aes(x=as.integer(year), y=alpha, color = municipality), size=2) + 
+  geom_point(aes(x=as.integer(year), y=alpha, color = municipality), size=2) +
   geom_line(aes(x=as.integer(year), y=alpha, color = municipality)) +
   stat_smooth(aes(x=year, y=alpha, color="Trend (loess)"), method="loess", fullrange=F, span=1, se=F, linetype='twodash', size=0.75) +
   scale_x_continuous("", expand=c(0,0), limits=c(2010.5,2018.5), breaks=2011:2017) +
@@ -196,7 +196,7 @@ plots[['histsplit']] <- ggplot(data=histdat) +
   scale_x_continuous(NULL, breaks=1:12, labels = format(seq(ISOdate(2011,1,1), by = "month", length.out = 12),"%b")) +
   scale_y_continuous("Frequency", breaks = seq(0,100,25)) +
   scale_fill_brewer("Year",palette = "Set1") +
-  theme_classic() +   
+  theme_classic() +
   theme(legend.position = c(0.1,0.5),
         legend.key = element_rect(colour = NA, fill = NA),
         legend.background = element_rect(color='black',fill='white'),
@@ -246,16 +246,16 @@ plots[['map']] <- ggmap(map) +
   geom_point(data=alpha[year==2016,], aes(x=longitude, y=latitude, fill=-alpha, size=AADB), shape=21, stroke=0.25, alpha=0.8) +
   #scale_fill_continuous("Alpha Value", high="#084594", low="#9ecae1", breaks = seq(0,-1,by=-0.2), labels=seq(0,1,by=0.2)) +
   scale_fill_continuous("Alpha Value", high="#3288bd", low="#d53e4f", breaks = seq(0,-1,by=-0.2), labels=seq(0,1,by=0.2)) +
-  scale_size_continuous("AADB") + 
+  scale_size_continuous("AADB") +
   theme_void() +
   theme(legend.position = c(0.1,0.3),
         legend.key = element_rect(colour = NA, fill = NA),
         legend.background = element_rect(color='black',fill='white'),
-        legend.margin = margin(6, 6, 6, 6)) 
+        legend.margin = margin(6, 6, 6, 6))
 #plots[['map']]
 
 #
-plots[['facmap']] <- ggmap(map, darken = c(0.5, "white")) + 
+plots[['facmap']] <- ggmap(map, darken = c(0.5, "white")) +
   geom_path(data=shp_bikes_df[!(Fac_Type %in% c("4","8","6","7",NA))], aes(x=long, y=lat, group=group,color=Fac_Type), size=1, alpha=0.8) +
   geom_path(data=shp_towns_df, aes(x = long, y = lat, group = group), color = 'black', size = 0.25) +
   geom_point(data=alpha.average, aes(x=longitude, y=latitude, fill=-alpha, size=AADB), shape=21, stroke=0.25, alpha=0.8) +
@@ -265,7 +265,7 @@ plots[['facmap']] <- ggmap(map, darken = c(0.5, "white")) +
                                                            "Unpaved path"="#ff7f00",
                                                            "Paved path"="#ffff33")) +
   scale_fill_continuous("Alpha Value", high="#3288bd", low="#d53e4f", breaks = seq(0,-1,by=-0.2), labels=seq(0,1,by=0.2)) +
-  scale_size_continuous("AADB") + 
+  scale_size_continuous("AADB") +
   theme_void() +
   theme(#legend.position = c(1.2,0.5),
         legend.key = element_rect(colour = NA, fill = NA),
@@ -273,7 +273,7 @@ plots[['facmap']] <- ggmap(map, darken = c(0.5, "white")) +
         legend.margin = margin(6, 6, 6, 6))
 #plots[['facmap']]
 
-plots[['facmapbase']] <- ggmap(map, darken = c(0.5, "white")) + 
+plots[['facmapbase']] <- ggmap(map, darken = c(0.5, "white")) +
   geom_path(data=shp_bikes_df[!(Fac_Type %in% c("4","8","6","7",NA))], aes(x=long, y=lat, group=group,color=Fac_Type), size=1, alpha=0.8) +
   geom_path(data=shp_towns_df, aes(x = long, y = lat, group = group), color = 'black', size = 0.25) +
   #geom_point(data=alpha.average, aes(x=longitude, y=latitude, fill=-alpha, size=AADB), shape=21, stroke=0.25, alpha=0.8) +
@@ -283,7 +283,7 @@ plots[['facmapbase']] <- ggmap(map, darken = c(0.5, "white")) +
                                                          "Unpaved path"="#ff7f00",
                                                          "Paved path"="#ffff33")) +
   scale_fill_continuous("Alpha Value", high="#3288bd", low="#d53e4f", breaks = seq(0,-1,by=-0.2), labels=seq(0,1,by=0.2)) +
-  scale_size_continuous("AADB") + 
+  scale_size_continuous("AADB") +
   theme_void() +
   theme(#legend.position = c(1.2,0.5),
     legend.key = element_rect(colour = NA, fill = NA),
@@ -310,7 +310,7 @@ plots[['sinefit']] <- ggplot() + theme_classic() +
   scale_color_brewer(NULL, palette = "Dark2") +
   scale_y_continuous("Monthly Average\nDaily Bicycles", breaks = seq(0,350,50)) +
   scale_x_date(NULL, date_breaks = "3 month", date_labels = "%b-%Y",
-                limits = c(as.Date("2011-01-01"),as.Date("2019-01-01")), expand = c(0,0)) + 
+                limits = c(as.Date("2011-01-01"),as.Date("2019-01-01")), expand = c(0,0)) +
   annotate("text", x=maxlabels$date, y=50, hjust=0, label=paste("alpha==",round(maxlabels$alpha,2)), family=font,size=3,parse=T) +
   annotate("text", x=maxlabels$date, y=25, hjust=0, label=paste("AADB =",round(maxlabels$AADB)), family=font,size=3) +
   annotate("text", x=maxlabels$date, y=0, hjust=0, label=paste("phi==",round(maxlabels$phi,2)), family=font,size=3,parse=T) +
@@ -324,7 +324,7 @@ plots[['sinefit']] <- ggplot() + theme_classic() +
 #plots[['sinefit']]
 
 #Continuous sinusoids total ####
-plots[['continuousall']] <- ggplot(data=ADB.station) + 
+plots[['continuousall']] <- ggplot(data=ADB.station) +
   geom_point(aes(x = date, y = ADB.total, color=municipality), size=0.5) +
   scale_color_brewer("Municipality", palette = "Set1") +
   scale_y_continuous("Monthly Average\nDaily Bicycles", label=scales::comma, breaks = seq(0,400,50)) +
@@ -338,7 +338,7 @@ plots[['continuousall']] <- ggplot(data=ADB.station) +
         legend.position = "none")
 #plots[['continuousall']]
 #
-plots[['continuousmuni']] <- ggplot() + 
+plots[['continuousmuni']] <- ggplot() +
   #geom_smooth(aes(x=date, y=ADB.total, color=municipality, group=interaction(municipality,year)),size=0.25, linetype=2, se=F, method="loess") +
   geom_point(data=ADB.muni, aes(x=date, y=ADB.total, color=municipality), size=1) +
   geom_line(data=fit.muni[year<2018,], aes(x=date, y=ADB.est, color=municipality, fill=as.character(year))) +
@@ -356,10 +356,10 @@ plots[['continuousmuni']] <- ggplot() +
 #grid.arrange(plots[['continuousall']],plots[['continuousmuni']])
 #sine diagram ####
 plots[['sineexamplealpha']] <- ggplot(data=data.table(x=c(0,12)), aes(x)) +
-  geom_vline(xintercept = 6, linetype="dashed") + 
-  geom_hline(yintercept = 1, linetype="dashed") + 
+  geom_vline(xintercept = 6, linetype="dashed") +
+  geom_hline(yintercept = 1, linetype="dashed") +
   theme_classic() +
-  scale_x_continuous("Month, t", breaks = 1:12, expand = c(0,0)) + 
+  scale_x_continuous("Month, t", breaks = 1:12, expand = c(0,0)) +
   scale_y_continuous("Monthly Average Daily Bicycles (MADB)", breaks = c(0,5), limits = c(0,2.5), expand = c(0,0)) +
   stat_function(fun=function(x) sine(x,0.125,1,6)) +
   stat_function(fun=function(x) sine(x,0.50,1,6)) +
@@ -372,12 +372,12 @@ plots[['sineexamplealpha']] <- ggplot(data=data.table(x=c(0,12)), aes(x)) +
   theme(text=element_text(family=font))
 #
 plots[['sineexampleaadb']] <- ggplot(data=data.table(x=c(0,12)), aes(x)) +
-  geom_vline(xintercept = 6, linetype="dashed") + 
-  geom_hline(yintercept = 0.25, linetype="dashed") + 
-  geom_hline(yintercept = 0.50, linetype="dashed") + 
-  geom_hline(yintercept = 1.00, linetype="dashed") + 
+  geom_vline(xintercept = 6, linetype="dashed") +
+  geom_hline(yintercept = 0.25, linetype="dashed") +
+  geom_hline(yintercept = 0.50, linetype="dashed") +
+  geom_hline(yintercept = 1.00, linetype="dashed") +
   theme_classic() +
-  scale_x_continuous("Month, t", breaks = 1:12, expand = c(0,0)) + 
+  scale_x_continuous("Month, t", breaks = 1:12, expand = c(0,0)) +
   scale_y_continuous("Monthly Average Daily Bicycles (MADB)", breaks = c(0,5), limits = c(0,1.75), expand = c(0,0)) +
   stat_function(fun=function(x) sine(x,0.75,0.25,6)) +
   stat_function(fun=function(x) sine(x,0.75,0.5,6)) +
@@ -392,7 +392,7 @@ plots[['sineexample']] <- grid.arrange(plots[['sineexamplealpha']], plots[['sine
 
 #Bar charts ####
 #Alpha
-plots[['alphabar']] <- ggplot(data=alpha[ , mean(alpha), by=station_id]) + 
+plots[['alphabar']] <- ggplot(data=alpha[ , mean(alpha), by=station_id]) +
   geom_col(aes(x=station_id, y=V1),fill="#1f78b4") +
   scale_y_continuous(expression(alpha~"value"), breaks=seq(0,1,0.2), expand = c(0,0)) +
   scale_x_discrete("Station (ordered by value)", limits=xorder, label=NULL) +
@@ -405,9 +405,9 @@ plots[['alphabar']] <- ggplot(data=alpha[ , mean(alpha), by=station_id]) +
         legend.position = "bottom")
 #plots[['alphabar']]
 #Income
-plots[['incomebar']] <- ggplot(data=stations[ , Rel_Mean_Income*relvals['income'], .(station_id,Rel_Mean_Income)]) + 
+plots[['incomebar']] <- ggplot(data=stations[ , Rel_Mean_Income*relvals['income'], .(station_id,Rel_Mean_Income)]) +
   geom_col(aes(x=station_id, y=V1), color="black", size=0.1, fill="#1f78b4") +
-  scale_y_continuous(NULL, limits=c(0,120000), breaks=seq(0,12e4,2e4), label = dollar, expand = c(0,0)) +  
+  scale_y_continuous(NULL, limits=c(0,120000), breaks=seq(0,12e4,2e4), label = dollar, expand = c(0,0)) +
   scale_x_discrete("Station (ordered by value)", limits=stations[order(Rel_Mean_Income), station_id], label=NULL) +
   theme_classic() +
   theme(text=element_text(family=font),
@@ -418,9 +418,9 @@ plots[['incomebar']] <- ggplot(data=stations[ , Rel_Mean_Income*relvals['income'
 #plots[['incomebar']]
 #age
 setorderv(stations, as.data.table(t(stations[ , lapply(.SD, mean), .SDcols = grepl("Age",colnames(stations))]), keep.rownames = T)[order(-V1),rn])
-plots[['agebar']] <- ggplot(data=melt(stations[ , grepl("station_id|Age",colnames(stations)),with=F], id.vars = "station_id")) + 
+plots[['agebar']] <- ggplot(data=melt(stations[ , grepl("station_id|Age",colnames(stations)),with=F], id.vars = "station_id")) +
   geom_col(aes(x=station_id, y=value, fill=variable),size=0.1, color="black") +
-  scale_y_continuous(NULL, limits=c(0,1), label = scales::percent, expand = c(0,0)) +  
+  scale_y_continuous(NULL, limits=c(0,1), label = scales::percent, expand = c(0,0)) +
   scale_x_discrete("Station (ordered by age group prevalence)", limits=stations[,station_id], label=NULL) +
   scale_fill_brewer("Age group", labels=c("Age_0to9"="0 to 9",
                              "Age_10to17"="10 to 17",
@@ -439,9 +439,9 @@ plots[['agebar']] <- ggplot(data=melt(stations[ , grepl("station_id|Age",colname
         legend.position = "bottom")
 #plots[['agebar']]
 #Pop density
-plots[['popbar']] <- ggplot(data=popdat) + 
+plots[['popbar']] <- ggplot(data=popdat) +
   geom_col(aes(x=station_id, y=value, fill=variable), size=0.1, color="black", position = "dodge") +
-  scale_y_continuous(expression("Population density per"~km^2), labels = scales::comma, breaks=seq(0,1.5e5,1e4), limits=c(0,1.5e5),expand = c(0,0)) + 
+  scale_y_continuous(expression("Population density per"~km^2), labels = scales::comma, breaks=seq(0,1.5e5,1e4), limits=c(0,1.5e5),expand = c(0,0)) +
   scale_x_discrete("Station", limits=xorder, label=NULL) +
   scale_fill_brewer(NULL, palette = "Set1", labels = c("WorkDens"="Workforce", "PopDens"="Residential")) +
   theme_classic() +
@@ -454,7 +454,7 @@ plots[['popbar']] <- ggplot(data=popdat) +
 #plots[['popbar']]
 #Facility bar
 setorderv(stations, as.data.table(t(stations[ , lapply(.SD, mean), .SDcols = grepl("Fac",colnames(stations))]), keep.rownames = T)[order(-V1),rn])
-plots[['facbar']] <- ggplot(data=melt(stations[ , grepl("station_id|Fac",colnames(stations)),with=F], id.vars = "station_id")[variable!="Fac_None",]) + 
+plots[['facbar']] <- ggplot(data=melt(stations[ , grepl("station_id|Fac",colnames(stations)),with=F], id.vars = "station_id")[variable!="Fac_None",]) +
   geom_col(aes(x=station_id, y=value, fill=variable), size=0.1, color="black") +
   scale_y_continuous(NULL, labels = scales::percent, breaks=seq(0,1,0.2), limits=c(0,1), expand = c(0,0)) +
   scale_x_discrete("Station (ordered by facility prevalence) ", limits=stations[,station_id], label=NULL) +
@@ -481,7 +481,7 @@ plots[['facbar']] <- ggplot(data=melt(stations[ , grepl("station_id|Fac",colname
 #plots[['facbar']]
 #Landuse
 setorderv(stations, as.data.table(t(stations[ , lapply(.SD, mean), .SDcols = grepl("LU",colnames(stations))]), keep.rownames = T)[order(-V1),rn])
-plots[['landbar']] <- ggplot(data=melt(stations[ , grepl("station_id|LU",colnames(stations)),with=F], id.vars = "station_id")) + 
+plots[['landbar']] <- ggplot(data=melt(stations[ , grepl("station_id|LU",colnames(stations)),with=F], id.vars = "station_id")) +
   geom_col(aes(x=station_id, y=value, fill=variable), size=0.1, color="black") +
   scale_y_continuous(NULL, labels = scales::percent, breaks=seq(0,1,.2), expand = c(0,0)) +
   scale_x_discrete("Station (ordered by land use prevalence)", limits=stations[,station_id], label=NULL) +
@@ -520,7 +520,7 @@ plots[['landbar']] <- ggplot(data=melt(stations[ , grepl("station_id|LU",colname
 #plots[['landbar']]
 #Workers
 setorderv(stations, as.data.table(t(stations[ , lapply(.SD, mean), .SDcols = grepl("Work",colnames(stations))]), keep.rownames = T)[order(-V1),rn])
-plots[['workerbar']] <- ggplot(data=melt(stations[ , grepl("station_id|Work_",colnames(stations)),with=F], id.vars = "station_id")) + 
+plots[['workerbar']] <- ggplot(data=melt(stations[ , grepl("station_id|Work_",colnames(stations)),with=F], id.vars = "station_id")) +
   geom_col(aes(x=station_id, y=value, fill=variable), size=0.1, color="black") +
   scale_x_discrete("Station (ordered by industry prevalence)", limits=stations[,station_id], label=NULL) +
   scale_y_continuous(NULL, labels = scales::percent, breaks=seq(0,1,.2), expand = c(0,0)) +
@@ -549,7 +549,7 @@ plots[['workerbar']] <- ggplot(data=melt(stations[ , grepl("station_id|Work_",co
         legend.position = "none")
 #plots[['workerbar']]
 setorderv(stations, as.data.table(t(stations[ , lapply(.SD, mean), .SDcols = grepl("Race",colnames(stations))]), keep.rownames = T)[order(-V1),rn])
-plots[['racebar']] <- ggplot(data=melt(stations[ , grepl("station_id|Race",colnames(stations)),with=F], id.vars = "station_id")) + 
+plots[['racebar']] <- ggplot(data=melt(stations[ , grepl("station_id|Race",colnames(stations)),with=F], id.vars = "station_id")) +
   geom_col(aes(x=station_id, y=value, fill=variable), size=0.1, color="black") +
   scale_x_discrete("Station (ordered by race prevalence)", limits=stations[,station_id], label=NULL) +
   scale_y_continuous(NULL, labels = scales::percent, breaks=seq(0,1,.2), expand = c(0,0)) +
@@ -695,9 +695,9 @@ plots[['agebar_agg']] <- ggplot(data=melt(stations[ , lapply(.SD, mean), .SDcols
 #plots[['agebar_agg']]
 
 #agegend
-plots[['agesexbar']] <- ggplot(agesex, aes(x = variable, fill = municipality)) + 
-  geom_col(data=agesex[sex == "Female",], aes(y=-prop), position = "dodge") + 
-  geom_col(data=agesex[sex == "Male",], aes(y=prop), position = "dodge") + 
+plots[['agesexbar']] <- ggplot(agesex, aes(x = variable, fill = municipality)) +
+  geom_col(data=agesex[sex == "Female",], aes(y=-prop), position = "dodge") +
+  geom_col(data=agesex[sex == "Male",], aes(y=prop), position = "dodge") +
   annotate("text", x="Under5", y = 0.05, label = "Male", family=font, hjust=0) +
   annotate("text", x="Under5", y = -0.05, label = "Female", family=font, hjust=0) +
   geom_hline(yintercept = 0) +
@@ -705,7 +705,7 @@ plots[['agesexbar']] <- ggplot(agesex, aes(x = variable, fill = municipality)) +
   scale_x_discrete(NULL, labels = c("Under 5","5 to 9","10 to 14","15 to 19","20 to 24","25 to 29","30 to 34",
                                     "35 to 39","40 to 44","45 to 49","50 to 54","55 to 59","60 to 64",
                                     "65 to 69","70 to 74","75 to 79","80 to 84","85 and over")) +
-  scale_fill_brewer(NULL, palette = "Set1") + 
+  scale_fill_brewer(NULL, palette = "Set1") +
   #coord_flip() +
   theme_bw() + theme(text=element_text(family=font),
                      axis.text.x = element_text(angle=45, size=10, hjust=1),
